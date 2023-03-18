@@ -1,0 +1,24 @@
+{
+  "cocktails": [
+    {
+      "id": 1,
+      "name": "martini vin blanc",
+      "src": "https://static.750g.com/images/600-600/cd72f869b189b87bec32a58909bf101c/gettyimages-71917252-1-.jpg"
+    },
+    {
+      "id": 2,
+      "name": "martini vin rouge",
+      "src": "https://produits.bienmanger.com/35319-0w470h470_Verre_Ballon_Martini.jpg"
+    },
+    {
+      "id": 3,
+      "name": "sex on the beach",
+      "src": "https://img.cuisineaz.com/1024x1024/2019/07/10/i147916-sex-on-the-beach.jpeg"
+    },
+    {
+      "name": "pastis",
+      "src": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fjacoulot.com%2Fproduit%2Fpastis-2%2F&psig=AOvVaw1VpveTBNvT8CnZH5tJc-6N&ust=1676149530617000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCPiytN3ti_0CFQAAAAAdAAAAABAE",
+      "id": 4
+    }
+  ]
+}
