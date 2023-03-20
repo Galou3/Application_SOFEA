@@ -108,4 +108,31 @@ app.get('/profil', (req, res) => {
     res.json({ message: token.toString() });
 });
 
+app.get('/cocktails',(req,res) => {
+    connection.query(`SELECT * from cocktails`,
+        function (err, results) {
+            if (err) {
+                throw err;
+            }
+            res.send(JSON.stringify(results));
+        })
+
+
+})
+app.post('/cocktails',(req,res) => {
+    const cocktail = req.body;
+
+    console.log(cocktail)
+    connection.query(`INSERT INTO cocktails (name,url,description) values ("${cocktail.name}","${cocktail.url}","${cocktail.description}")`,
+        function (err,results){
+            if (err) {
+                console.log(err)
+                throw err;
+            }
+            console.log(results)
+            res.send(JSON.stringify(results))
+        }
+    )
+})
+
 app.listen(3000)
