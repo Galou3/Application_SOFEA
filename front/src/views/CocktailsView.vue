@@ -1,5 +1,7 @@
 <template>
   <h1>Nos meilleures recettes !</h1>
+  <p>Si il n'y a pas d'image c'est que la base de donnée est vide vous pouvez ajouter
+   un cocktail avec : Créer un nouveau coktail </p>
   <div class="cocktails-container">
     <CocktailItem v-for="(cocktail, index) in cocktails" :key="index" :cocktail="cocktail"/>
   </div>

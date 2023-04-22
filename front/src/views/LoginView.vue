@@ -26,6 +26,8 @@ const router = useRouter()
 const email = ref('')
 const name = ref('')
 const password = ref('')
+
+
 function handleSubmit() {
   fetch('http://localhost:3000/login', {
     headers: {
@@ -46,11 +48,10 @@ function handleSubmit() {
       })
       .then(function (res)  {
         store.token = res.token
-
+        localStorage.setItem("token",res.token);
         router.push({ name: 'home' })
       })
       .catch(() => alert('mot de passe éronné'))
 }
-
 
 </script>

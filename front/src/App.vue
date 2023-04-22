@@ -13,3 +13,14 @@
 <style>
 
 </style>
+
+<script setup>
+
+import {store} from "@/store/User";
+
+  const token = localStorage.getItem("token");
+  if (token){
+    store.token = token;
+  }
+  console.log(token)
+</script>

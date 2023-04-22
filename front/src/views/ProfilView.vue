@@ -1,26 +1,30 @@
 <template>
 
-  <h1>Voici le pseudo de l'utilisateur décrypter : {{store.decryptedMessage}}</h1>
+  <h1>Si vous voulez voir votre profil connecter vous </h1>
+  <h2>Voici le pseudo de l'utilisateur décrypter : {{store.decryptedMessage}}</h2>
 </template>
 
 
 <script setup>
-import { store } from "@/store/User";
+import {store} from "@/store/User";
+import {useRouter} from "vue-router";
+const router = useRouter()
+
+if (!store.token){
+  router.push({ name: 'login' })
+}
 
 function getprofil() {
-  fetch('http://localhost:3000/profil?' + new URLSearchParams({
-    token: store.token
-  }), {
+  fetch('http://localhost:3000/profil?', {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${store.token}`
     },
     method: 'GET'
   })
       .then(res => res.json())
       .then((res) => {
-        const decryptedObject = JSON.parse(res.message);
-        store.decryptedMessage = decryptedObject.name;
-        console.log(res);
+        store.decryptedMessage = res.name;
       }).catch((error) => {
     console.error("Error:", error);
     alert("Vous n'êtes pas connecté vous ne pouvez pas voir votre profil");

@@ -4,7 +4,7 @@ import cors from 'cors';
 import crypto from "crypto"
 import fs from 'fs'
 
-export function encryptText (plainText) {
+export function encryptText(plainText) {
     return crypto.publicEncrypt({
             key: fs.readFileSync('public_key.pem', 'utf8'),
             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
@@ -15,7 +15,7 @@ export function encryptText (plainText) {
     )
 }
 
-export function decryptText (encryptedText) {
+export function decryptText(encryptedText) {
     return crypto.privateDecrypt(
         {
             key: fs.readFileSync('private_key.pem', 'utf8'),
@@ -29,6 +29,23 @@ export function decryptText (encryptedText) {
     )
 }
 
+function getUser(req, res) {
+    let authorization = req.headers.authorization;
+    if (!authorization) {
+        res.status(401).send({
+            message: 'Pas connecté'
+        })
+    }
+    authorization = authorization.substring(7)
+    console.log(authorization)
+    try {
+        return JSON.parse(decryptText(Buffer.from(authorization, 'base64')).toString())
+    } catch (err) {
+        res.status(401).send({
+            message: 'Pas connecté'
+        })
+    }
+}
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -93,7 +110,7 @@ app.post('/login', (req, res) => {
                     email: user.email,
                     name: user.name
                 }))
-                res.send({token : token.toString('base64')})
+                res.send({token: token.toString('base64')})
             } else {
                 res.status(401).send({
                     message: 'Adresse e-mail ou mot de passe incorrect',
@@ -104,11 +121,15 @@ app.post('/login', (req, res) => {
     );
 });
 app.get('/profil', (req, res) => {
-    const token = decryptText(Buffer.from(req.query.token, 'base64'));
-    res.json({ message: token.toString() });
+
+    const user = getUser(req, res);
+    console.log(user)
+    res.send(user)
+
+
 });
 
-app.get('/cocktails',(req,res) => {
+app.get('/cocktails', (req, res) => {
     connection.query(`SELECT * from cocktails`,
         function (err, results) {
             if (err) {
@@ -119,12 +140,12 @@ app.get('/cocktails',(req,res) => {
 
 
 })
-app.post('/cocktails',(req,res) => {
+app.post('/cocktails', (req, res) => {
     const cocktail = req.body;
 
     console.log(cocktail)
     connection.query(`INSERT INTO cocktails (name,url,description) values ("${cocktail.name}","${cocktail.url}","${cocktail.description}")`,
-        function (err,results){
+        function (err, results) {
             if (err) {
                 console.log(err)
                 throw err;
